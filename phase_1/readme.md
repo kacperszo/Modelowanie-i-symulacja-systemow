@@ -30,10 +30,7 @@ The engineering challenge is that the target "bioactive conformation" (the shape
 | **Stochastic / Monte Carlo** | MCMM, LMOD | Can efficiently tunnel through high steric energy barriers. | Generates a massive proportion of highly similar duplicates, requiring heavy downstream filtering. |
 | **Molecular Dynamics (MD)** | GROMACS, OpenMM | Provides true kinetic trajectories and accounts for explicit solvent effects. | Extreme computational cost. Routinely gets trapped in deep local minima (kinetic trapping). |
 
-## **Pragmatic Open Research Problems**
-
-While solving kinetic trapping in MD requires massive supercomputing clusters, there are several highly relevant, solvable computational bottlenecks in the conformational generation pipeline that present excellent targets for algorithmic optimization and benchmarking:
-
+## **Open Research Problems**
 1. **The $\\mathcal{O}(N^2)$ RMSD Clustering Bottleneck:** Generating thousands of stochastic conformers (e.g., via ETKDG) takes seconds, but selecting a highly diverse subset (e.g., 50 representative structures) is computationally crippling. Traditional clustering requires calculating the Root Mean Square Deviation (RMSD) distance matrix between every single pair of conformers, resulting in $\\mathcal{O}(N^2)$ complexity, exacerbated by costly 3D graph-matching for symmetries.  
    **Research Target:** Evaluating whether classic RMSD matrices can be bypassed entirely by mapping 3D structures to 1D feature vectors (e.g., intramolecular distance matrices) and applying dimensionality reduction (PCA) coupled with faster clustering algorithms, without losing the structural diversity of the final ensemble.  
 2. **Benchmarking Conformational Coverage for Sparse-Topology Molecules (Macrocycles):** Standard open-source libraries are phenomenally tuned for traditional small molecules fitting Lipinski's parameters. However, the exact failure points of these algorithms when confronted with complex, non-standard topologies (like macrocyclic drugs) are poorly documented.  
