@@ -30,6 +30,17 @@ The engineering challenge is that the target "bioactive conformation" (the shape
 | **Stochastic / Monte Carlo** | MCMM, LMOD | Can efficiently tunnel through high steric energy barriers. | Generates a massive proportion of highly similar duplicates, requiring heavy downstream filtering. |
 | **Molecular Dynamics (MD)** | GROMACS, OpenMM | Provides true kinetic trajectories and accounts for explicit solvent effects. | Extreme computational cost. Routinely gets trapped in deep local minima (kinetic trapping). |
 
+## **Simulation Software**
+| Tool / Engine | Category | Core Algorithms / Features | Primary Use Case & Limitations |
+| :--- | :--- | :--- | :--- |
+| **RDKit** | Open-Source Toolkit | ETKDG, Distance Geometry | Python API standard. fast generation; struggles with novel macrocycles. |
+| **Open Babel** | Open-Source Library | Confab (Systematic search) | Universal format translation and baseline systematic conformational generation. |
+| **OMEGA (OpenEye)** | Commercial Generator | Knowledge-based fragmentation | Industry standard for generating massive, high-quality conformer libraries. |
+| **MacroModel (Schrödinger)** | Commercial Suite | MCMM, LMOD, OPLS force fields | Complex heuristics; tunneling through high steric barriers. |
+| **GROMACS / NAMD** | MD Engine (C/C++) | Classical Molecular Dynamics | Highly parallelized HPC simulations of full protein-ligand trajectories in explicit solvent. |
+| **OpenMM** | GPU MD Toolkit | Hardware-accelerated MD | Python-first, extensible MD integration directly into automated computational pipelines. |
+
+
 ## **Open Research Problems**
 1. **The $\\mathcal{O}(N^2)$ RMSD Clustering Bottleneck:** Generating thousands of stochastic conformers (e.g., via ETKDG) takes seconds, but selecting a highly diverse subset (e.g., 50 representative structures) is computationally crippling. Traditional clustering requires calculating the Root Mean Square Deviation (RMSD) distance matrix between every single pair of conformers, resulting in $\\mathcal{O}(N^2)$ complexity, exacerbated by costly 3D graph-matching for symmetries.  
    **Research Target:** Evaluating whether classic RMSD matrices can be bypassed entirely by mapping 3D structures to 1D feature vectors (e.g., intramolecular distance matrices) and applying dimensionality reduction (PCA) coupled with faster clustering algorithms, without losing the structural diversity of the final ensemble.  
