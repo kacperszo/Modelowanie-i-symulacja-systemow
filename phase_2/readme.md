@@ -61,6 +61,20 @@ Temperature T controls the exploration–exploitation trade-off: high T allows t
 
 ## Optimization procedure
 
+### Proposal distribution
+
+Each agent uses a **Gaussian random walk** to propose the next angle:
+
+```
+φ' = φ + δ,   δ ~ N(0, σ)
+```
+
+where σ = 15° is the step size. The agent does not reason about what angle would be good — it simply perturbs the current angle by a small random amount drawn from a normal distribution. The result is wrapped to [−180°, 180°] to stay in the valid range.
+
+The step size σ controls a trade-off: small σ gives high acceptance rate but slow exploration; large σ explores faster but most proposals are rejected because the energy jump is too large.
+
+### One simulation step
+
 One simulation step iterates over each color group:
 
 ```mermaid
@@ -102,6 +116,7 @@ This approach is a form of MCMC over dihedral space, with the agentic abstractio
 ## Validation
 
 - Compare dihedral angle distributions: ABM histogram vs. ETKDG ensemble histogram.
+    - <img width="2084" height="2278" alt="image" src="https://github.com/user-attachments/assets/1abc2fc9-54bd-46bf-b0a2-038d656d81a3" />
 - RMSD between final ABM conformation and lowest-energy ETKDG conformation.
 - Optional: compare with experimental crystal structures from the Cambridge Structural Database (CSD) [7] — a curated repository of experimentally determined small-molecule 3D structures.
 
