@@ -2,9 +2,9 @@
 
 **Question:** Can a minority of agents using one strategy destabilise the collective behaviour of a majority using another?
 
-**Design:** Vary the number of `consensus` agents (0 → N_bonds) in a background of `isolated` agents on fluoxetine with zeros initialisation — the deadlock-prone condition.
+**Design:** Vary the number of `consensus` agents (0 → N_bonds) in a background of `isolated` agents on fluoxetine with zeros initialisation - the deadlock-prone condition.
 
-### 4.1 Deadlock threshold
+### Deadlock threshold
 
 ![Heterogeneous energy](results/heterogeneous_energy.png)
 
@@ -27,11 +27,11 @@ The convergence plot shows the exact qualitative transition: 0–1 consensus age
 
 ### Gradient-exchange minority
 
-For `gradient_exchange` as minority strategy (zeros init), the pattern is opposite — adding gradient-exchange agents slightly improves system outcomes from difficult initialisations. The directional gradient signal helps nearby isolated agents escape initial steric clashes.
+For `gradient_exchange` as minority strategy (zeros init), the pattern is opposite - adding gradient-exchange agents slightly improves system outcomes from difficult initialisations. The directional gradient signal helps nearby isolated agents escape initial steric clashes.
 
 ![Heterogeneous acceptance](results/heterogeneous_acceptance.png)
 
-Acceptance rate analysis reveals that consensus agents in mixed populations have near-zero acceptance (always vetoing), while their isolated neighbours maintain moderate acceptance but progressively higher energy — the deadlock spreads through the communication graph without consensus agents needing to be directly connected.
+Acceptance rate analysis reveals that consensus agents in mixed populations have near-zero acceptance (always vetoing), while their isolated neighbours maintain moderate acceptance but progressively higher energy - the deadlock spreads through the communication graph without consensus agents needing to be directly connected.
 
 ---
 
@@ -43,7 +43,7 @@ Instead of one agent per rotatable bond, one agent per unique **atom_i** (first 
 
 **Key consequences:**
 
-- A branching atom (e.g. the nitrogen in lidocaine) owns **multiple bonds** — one agent controls 2 degrees of freedom simultaneously
+- A branching atom (e.g. the nitrogen in lidocaine) owns **multiple bonds** - one agent controls 2 degrees of freedom simultaneously
 - N_agents ≤ N_bonds (lidocaine: 6 bonds → 5 atom agents)
 - Communication by **atom-to-atom** Euclidean distance (default 5.0 Å) rather than bond midpoint distance
 - Agent perceives the energy consequence of all its owned bonds, not just one
@@ -65,7 +65,7 @@ The branching nitrogen starts with few atom neighbours → sigma = 25° → take
 
 Three new strategies exploit capabilities impossible in the bond model:
 
-**`best_first`:** Always rotate the owned bond with the most negative gradient (steepest downhill). Bond agents cannot make this choice — they have only one bond.
+**`best_first`:** Always rotate the owned bond with the most negative gradient (steepest downhill). Bond agents cannot make this choice - they have only one bond.
 
 **`coordinated`:** Attempt to rotate **all** owned bonds each step (shuffled order, independent Metropolis per bond). A multi-bond atom explores N-dimensional dihedral space per step instead of 1D.
 
@@ -80,17 +80,17 @@ Three new strategies exploit capabilities impossible in the bond model:
 ![Atom acceptance vs energy](results/atom_acceptance_vs_energy.png)
 
 **`coordinated`** is the most effective new strategy:
-- Lidocaine etkdg: **E = 94.9** — best result across all atom strategies, better than bond `local_greed` (96.9)
-- Fluoxetine etkdg: E = 105.0 — comparable to bond isolated
+- Lidocaine etkdg: **E = 94.9** - best result across all atom strategies, better than bond `local_greed` (96.9)
+- Fluoxetine etkdg: E = 105.0 - comparable to bond isolated
 - Mechanism: sequential multi-bond rotation prevents the large-step destruction seen in `adaptive_density` while fully exploiting the atom's N-dimensional reach
 
 **`lookahead`** excels on small molecules:
-- Aspirin: **E = 39.8** — lowest energy recorded across all strategies in the entire project
-- Low coverage (0.10–0.14) — samples cautiously, rarely wastes moves; sufficient for small state spaces
+- Aspirin: **E = 39.8** - lowest energy recorded across all strategies in the entire project
+- Low coverage (0.10–0.14) - samples cautiously, rarely wastes moves; sufficient for small state spaces
 - Fails on complex initialisations (zeros/anti on fluoxetine) where careful local search cannot escape global traps
 
 **`best_first`** shows a failure mode specific to atom agents:
-- Fluoxetine etkdg: E = 551.6 — far worse than isolated
+- Fluoxetine etkdg: E = 551.6 - far worse than isolated
 - Consistently choosing the steepest bond creates a deterministic trap: the agent keeps returning to the same bond, rotating it back and forth, while ignoring other bonds entirely. The absence of randomisation in bond selection leads to cyclic behaviour.
 
 ### Why the atom model does not uniformly outperform the bond model
@@ -148,10 +148,10 @@ The 4.0 Å cutoff (bond) / 5.0 Å (atom) is the **only regime** where genuine co
 
 **Communication range determines whether collective dynamics exist at all.** There is a sharp transition: at 4.0 Å (bond midpoints) the topology becomes dynamic and strategies diverge. Outside this range, all strategies converge to the isolated baseline.
 
-**The communication graph is not a fixed input — it is an emergent output.** Agents whose decisions move the molecule into more compact geometries increase their own connectivity, which changes future decisions. This self-modifying structure is the defining ABM property of the simulation.
+**The communication graph is not a fixed input - it is an emergent output.** Agents whose decisions move the molecule into more compact geometries increase their own connectivity, which changes future decisions. This self-modifying structure is the defining ABM property of the simulation.
 
 **Cooperative paralysis is the most important emergent phenomenon.** A social rule designed to prevent neighbourhood destabilisation produces, under adversarial initial conditions, a permanently frozen collective state that no individual agent can escape. Two agents out of seven are sufficient. This phenomenon is qualitatively absent from any single-agent or homogeneous-optimiser model.
 
-**Agent granularity matters — but matching strategy to architecture matters more.** The atom model with original bond strategies underperforms because strategies designed for 1D action do not exploit multi-bond perception. Atom-specific strategies (`coordinated`, `lookahead`) that leverage the richer action space outperform their bond-model equivalents on medium and small molecules.
+**Agent granularity matters - but matching strategy to architecture matters more.** The atom model with original bond strategies underperforms because strategies designed for 1D action do not exploit multi-bond perception. Atom-specific strategies (`coordinated`, `lookahead`) that leverage the richer action space outperform their bond-model equivalents on medium and small molecules.
 
-**Temperature modulates the role of social rules.** At 300 K, thermal energy dominates and social signals are invisible. Simulated annealing creates a regime where gradient sharing, imitation, and collective vetoing each produce qualitatively distinct trajectories — and where the role of `consensus` inverts from paralysing the system to protecting it.
+**Temperature modulates the role of social rules.** At 300 K, thermal energy dominates and social signals are invisible. Simulated annealing creates a regime where gradient sharing, imitation, and collective vetoing each produce qualitatively distinct trajectories - and where the role of `consensus` inverts from paralysing the system to protecting it.
