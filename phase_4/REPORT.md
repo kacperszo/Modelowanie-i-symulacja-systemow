@@ -37,7 +37,7 @@ Acceptance rate analysis reveals that consensus agents in mixed populations have
 
 ##  Atom-as-Agent
 
-### 5.1 Architecture change
+### Architecture change
 
 Instead of one agent per rotatable bond, one agent per unique **atom_i** (first central atom) across all rotatable bonds.
 
